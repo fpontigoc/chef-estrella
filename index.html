@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Chef Estrella</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" aria-label="Juego Chef Estrella">
+      <section class="phone">
+        <header class="top-bar">
+          <button class="icon-button" id="resetGame" type="button" aria-label="Reiniciar partida">
+            <span aria-hidden="true">↺</span>
+          </button>
+          <div class="brand">
+            <span class="brand-small">Chef</span>
+            <span class="brand-big">Estrella</span>
+          </div>
+          <div class="wallet" aria-label="Monedas y estrellas">
+            <span><b id="coinCount">0</b> monedas</span>
+            <span><b id="starCount">0</b> estrellas</span>
+          </div>
+        </header>
+
+        <section class="level-strip" aria-label="Progreso del nivel">
+          <div>
+            <span class="level-label" id="levelLabel">Nivel 1</span>
+            <span class="level-name" id="difficultyLabel">Aprendiz</span>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <span id="levelProgress"></span>
+          </div>
+        </section>
+
+        <section class="service-window">
+          <div class="order-panel">
+            <div class="order-title">
+              <span>Pedido</span>
+              <strong id="recipeName">Pasta al tomate</strong>
+            </div>
+            <div class="dish-preview">
+              <img class="dish-art" id="dishSprite" src="./assets/crops/dish-pasta.png" alt="" />
+            </div>
+            <div class="needed-list" id="neededList" aria-label="Ingredientes necesarios"></div>
+            <div class="price-row">
+              <span>Precio <b id="priceValue">$0</b></span>
+              <span>Costo <b id="costValue">$0</b></span>
+              <span>Gana <b id="profitValue">$0</b></span>
+            </div>
+          </div>
+
+          <div class="customer-panel">
+            <div class="bubble" id="customerBubble">Quiero algo rico, por favor.</div>
+            <div class="customer-stage">
+              <img class="customer-art" id="customerSprite" src="./assets/crops/customer-boy.png" alt="" />
+              <img class="chef-art" src="./assets/crops/chef.png" alt="" />
+            </div>
+          </div>
+        </section>
+
+        <section class="prep-counter" aria-label="Mesa de preparación">
+          <div class="counter-head">
+            <div>
+              <span class="section-label">Preparación</span>
+              <strong id="prepStatus">Elige ingredientes</strong>
+            </div>
+            <button class="text-button" id="clearTray" type="button">Limpiar</button>
+          </div>
+          <div class="plate-zone">
+            <div class="plate" id="plate" aria-label="Ingredientes en el plato"></div>
+            <div class="cook-meter" id="cookMeter" aria-hidden="true">
+              <span></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="ingredients-panel" aria-label="Ingredientes">
+          <div class="section-label">Ingredientes</div>
+          <div class="ingredients-grid" id="ingredientsGrid"></div>
+        </section>
+
+        <section class="actions" aria-label="Acciones de cocina">
+          <button class="action prepare" id="prepareButton" type="button">Preparar</button>
+          <button class="action cook" id="cookButton" type="button">Cocinar</button>
+          <button class="action deliver" id="deliverButton" type="button">Entregar</button>
+        </section>
+
+        <section class="feedback" id="feedback" role="status" aria-live="polite">
+          Toca los ingredientes del pedido para comenzar.
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
