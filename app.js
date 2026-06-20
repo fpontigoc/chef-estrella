@@ -36,7 +36,7 @@ const characters = [
   },
   {
     id: "isabela",
-    name: "Isabela",
+    name: "Isabella",
     age: "8 a\u00f1os",
     initial: "I",
     role: "Aprendiz estrella",
