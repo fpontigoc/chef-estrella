@@ -39,6 +39,7 @@ const characters = [
     name: "Isabella",
     age: "8 a\u00f1os",
     initial: "I",
+    avatar: "./assets/characters/isabella-avatar.png",
     role: "Aprendiz estrella",
     path: "Parte desde lo b\u00e1sico",
     allowedTiers: ["easy", "moderate", "hard"],
@@ -166,6 +167,7 @@ const els = {
   profitValue: document.querySelector("#profitValue"),
   customerBubble: document.querySelector("#customerBubble"),
   customerSprite: document.querySelector("#customerSprite"),
+  chefSprite: document.querySelector("#chefSprite"),
   prepStatus: document.querySelector("#prepStatus"),
   plate: document.querySelector("#plate"),
   cookMeter: document.querySelector("#cookMeter"),
@@ -419,8 +421,11 @@ function renderCharacterChoices() {
     button.type = "button";
     button.className = `character-card ${character.id}`;
     button.setAttribute("aria-label", `Elegir ${character.name}`);
+    const avatar = character.avatar
+      ? `<img class="character-avatar image-avatar" src="${character.avatar}" alt="" />`
+      : `<span class="character-avatar" aria-hidden="true">${character.initial}</span>`;
     button.innerHTML = `
-      <span class="character-avatar" aria-hidden="true">${character.initial}</span>
+      ${avatar}
       <span class="character-copy">
         <strong>${character.name}</strong>
         <span>${character.age} · ${character.role}</span>
@@ -510,6 +515,8 @@ function render() {
   els.dishSprite.src = `./assets/crops/dish-${recipe.dish}.png`;
   els.customerBubble.textContent = recipe.request;
   els.customerSprite.src = `./assets/crops/customer-${recipe.customer}.png`;
+  els.chefSprite.src = character.avatar || "./assets/crops/chef.png";
+  els.chefSprite.classList.toggle("custom-chef", Boolean(character.avatar));
   els.priceValue.textContent = money(recipe.price);
   els.costValue.textContent = money(cost);
   els.profitValue.textContent = money(recipe.price - cost);
