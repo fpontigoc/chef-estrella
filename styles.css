@@ -110,7 +110,7 @@ button {
 .wallet {
   display: grid;
   gap: 5px;
-  min-width: 96px;
+  min-width: 106px;
   padding: 8px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.95);
@@ -121,9 +121,126 @@ button {
   box-shadow: inset 0 -3px 0 rgba(23, 43, 96, 0.12);
 }
 
+.player-pill {
+  max-width: 112px;
+  overflow: hidden;
+  color: var(--red-dark);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .wallet b {
   color: var(--blue);
   font-size: 1rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.character-select {
+  display: grid;
+  gap: 12px;
+  margin: 0 10px;
+  padding: 14px;
+  border: 3px solid rgba(10, 95, 184, 0.22);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 201, 40, 0.2), transparent 44%),
+    rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 16px rgba(36, 71, 118, 0.08);
+}
+
+.character-intro {
+  display: grid;
+  gap: 4px;
+}
+
+.character-intro strong {
+  color: var(--navy);
+  font-size: clamp(1.25rem, 6vw, 1.65rem);
+  font-weight: 950;
+  line-height: 1;
+}
+
+.character-intro span {
+  color: rgba(23, 43, 96, 0.72);
+  font-size: 0.86rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.character-choices {
+  display: grid;
+  gap: 9px;
+}
+
+.character-card {
+  min-height: 88px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 16px;
+  border: 2px solid rgba(23, 43, 96, 0.15);
+  background: linear-gradient(180deg, #ffffff, #eefaff);
+  color: var(--navy);
+  text-align: left;
+  box-shadow: inset 0 -4px 0 rgba(10, 95, 184, 0.08);
+}
+
+.character-card:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 0 rgba(10, 95, 184, 0.08);
+}
+
+.character-avatar {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 950;
+  box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.14), 0 3px 0 rgba(23, 43, 96, 0.12);
+}
+
+.character-card.kevin .character-avatar {
+  background: linear-gradient(180deg, #186ed2, #103f88);
+}
+
+.character-card.agustin .character-avatar {
+  background: linear-gradient(180deg, #ffbe34, #dd7b18);
+}
+
+.character-card.isabela .character-avatar {
+  background: linear-gradient(180deg, #8ade3d, #2e9e34);
+}
+
+.character-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.character-copy strong {
+  font-size: 1.1rem;
+  font-weight: 950;
+}
+
+.character-copy span,
+.character-copy small {
+  color: rgba(23, 43, 96, 0.7);
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.16;
+}
+
+.character-copy small {
+  color: var(--red-dark);
 }
 
 .level-strip {
@@ -461,6 +578,18 @@ button {
   font-size: 0.9rem;
   font-weight: 900;
   line-height: 1.22;
+}
+
+.feedback[data-mood="bad"] {
+  background: #7f1d1d;
+}
+
+.feedback[data-mood="warn"] {
+  background: #8a4b05;
+}
+
+.feedback[data-mood="good"] {
+  background: #146c2e;
 }
 
 .dish-art,

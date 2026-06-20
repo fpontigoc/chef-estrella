@@ -8,22 +8,31 @@
   </head>
   <body>
     <main class="game-shell" aria-label="Juego Chef Estrella">
-      <section class="phone">
+      <section class="phone" id="phone">
         <header class="top-bar">
           <button class="icon-button" id="resetGame" type="button" aria-label="Reiniciar partida">
-            <span aria-hidden="true">↺</span>
+            <span aria-hidden="true">&#8634;</span>
           </button>
           <div class="brand">
             <span class="brand-small">Chef</span>
             <span class="brand-big">Estrella</span>
           </div>
           <div class="wallet" aria-label="Monedas y estrellas">
+            <span class="player-pill" id="playerName">Sin personaje</span>
             <span><b id="coinCount">0</b> monedas</span>
             <span><b id="starCount">0</b> estrellas</span>
           </div>
         </header>
 
-        <section class="level-strip" aria-label="Progreso del nivel">
+        <section class="character-select" id="characterSelect" aria-label="Elegir personaje">
+          <div class="character-intro">
+            <strong>Elige quien cocina</strong>
+            <span>Cada personaje parte con una dificultad distinta.</span>
+          </div>
+          <div class="character-choices" id="characterChoices"></div>
+        </section>
+
+        <section class="level-strip" aria-label="Progreso del nivel" data-gameplay>
           <div>
             <span class="level-label" id="levelLabel">Nivel 1</span>
             <span class="level-name" id="difficultyLabel">Aprendiz</span>
@@ -33,7 +42,7 @@
           </div>
         </section>
 
-        <section class="service-window">
+        <section class="service-window" data-gameplay>
           <div class="order-panel">
             <div class="order-title">
               <span>Pedido</span>
@@ -59,10 +68,10 @@
           </div>
         </section>
 
-        <section class="prep-counter" aria-label="Mesa de preparación">
+        <section class="prep-counter" aria-label="Mesa de preparaci&oacute;n" data-gameplay>
           <div class="counter-head">
             <div>
-              <span class="section-label">Preparación</span>
+              <span class="section-label">Preparaci&oacute;n</span>
               <strong id="prepStatus">Elige ingredientes</strong>
             </div>
             <button class="text-button" id="clearTray" type="button">Limpiar</button>
@@ -75,19 +84,19 @@
           </div>
         </section>
 
-        <section class="ingredients-panel" aria-label="Ingredientes">
+        <section class="ingredients-panel" aria-label="Ingredientes" data-gameplay>
           <div class="section-label">Ingredientes</div>
           <div class="ingredients-grid" id="ingredientsGrid"></div>
         </section>
 
-        <section class="actions" aria-label="Acciones de cocina">
+        <section class="actions" aria-label="Acciones de cocina" data-gameplay>
           <button class="action prepare" id="prepareButton" type="button">Preparar</button>
           <button class="action cook" id="cookButton" type="button">Cocinar</button>
           <button class="action deliver" id="deliverButton" type="button">Entregar</button>
         </section>
 
         <section class="feedback" id="feedback" role="status" aria-live="polite">
-          Toca los ingredientes del pedido para comenzar.
+          Elige un personaje para comenzar.
         </section>
       </section>
     </main>

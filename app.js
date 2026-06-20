@@ -1,22 +1,56 @@
 const ingredients = [
-  { id: "tomate", name: "Tomate", cost: 4, icon: "🍅" },
-  { id: "albahaca", name: "Albahaca", cost: 3, icon: "🌿" },
-  { id: "pasta", name: "Pasta", cost: 6, icon: "🍝" },
-  { id: "queso", name: "Queso", cost: 5, icon: "🧀" },
-  { id: "champinon", name: "Champiñón", cost: 5, icon: "🍄" },
-  { id: "aceitunas", name: "Aceitunas", cost: 4, icon: "🫒" },
-  { id: "pimiento", name: "Pimiento", cost: 4, icon: "🫑" },
-  { id: "huevo", name: "Huevo", cost: 4, icon: "🥚" },
-  { id: "arroz", name: "Arroz", cost: 5, icon: "🍚" },
-  { id: "pescado", name: "Pescado", cost: 9, icon: "🐟" },
-  { id: "tortilla", name: "Tortilla", cost: 4, icon: "🫓" },
-  { id: "lechuga", name: "Lechuga", cost: 3, icon: "🥬" },
+  { id: "tomate", name: "Tomate", cost: 4, icon: "\u{1F345}" },
+  { id: "albahaca", name: "Albahaca", cost: 3, icon: "\u{1F33F}" },
+  { id: "pasta", name: "Pasta", cost: 6, icon: "\u{1F35D}" },
+  { id: "queso", name: "Queso", cost: 5, icon: "\u{1F9C0}" },
+  { id: "champinon", name: "Champi\u00f1\u00f3n", cost: 5, icon: "\u{1F344}" },
+  { id: "aceitunas", name: "Aceitunas", cost: 4, icon: "\u{1FAD2}" },
+  { id: "pimiento", name: "Pimiento", cost: 4, icon: "\u{1FAD1}" },
+  { id: "huevo", name: "Huevo", cost: 4, icon: "\u{1F95A}" },
+  { id: "arroz", name: "Arroz", cost: 5, icon: "\u{1F35A}" },
+  { id: "pescado", name: "Pescado", cost: 9, icon: "\u{1F41F}" },
+  { id: "tortilla", name: "Tortilla", cost: 4, icon: "\u{1FAD3}" },
+  { id: "lechuga", name: "Lechuga", cost: 3, icon: "\u{1F96C}" },
+];
+
+const characters = [
+  {
+    id: "kevin",
+    name: "Kevin Talks",
+    age: "23 a\u00f1os",
+    initial: "K",
+    role: "Chef experto",
+    path: "Solo pedidos complejos",
+    allowedTiers: ["hard"],
+    startingCoins: 60,
+  },
+  {
+    id: "agustin",
+    name: "Agust\u00edn",
+    age: "13 a\u00f1os",
+    initial: "A",
+    role: "Reto intermedio",
+    path: "Parte en platos moderados",
+    allowedTiers: ["moderate", "hard"],
+    startingCoins: 40,
+  },
+  {
+    id: "isabela",
+    name: "Isabela",
+    age: "8 a\u00f1os",
+    initial: "I",
+    role: "Aprendiz estrella",
+    path: "Parte desde lo b\u00e1sico",
+    allowedTiers: ["easy", "moderate", "hard"],
+    startingCoins: 25,
+  },
 ];
 
 const recipes = [
   {
     name: "Pasta al tomate",
-    difficulty: "Aprendiz",
+    difficulty: "B\u00e1sico",
+    tier: "easy",
     dish: "pasta",
     customer: "boy",
     request: "Me encanta la pasta con tomate y albahaca.",
@@ -27,7 +61,8 @@ const recipes = [
   },
   {
     name: "Ensalada arcoiris",
-    difficulty: "Aprendiz",
+    difficulty: "B\u00e1sico",
+    tier: "easy",
     dish: "salad",
     customer: "girl",
     request: "Quiero una ensalada fresca con mucho color.",
@@ -38,7 +73,8 @@ const recipes = [
   },
   {
     name: "Omelet feliz",
-    difficulty: "Ayudante",
+    difficulty: "Medio",
+    tier: "moderate",
     dish: "omelet",
     customer: "grandpa",
     request: "Un omelet calentito con queso y pimiento.",
@@ -49,7 +85,8 @@ const recipes = [
   },
   {
     name: "Rollitos de pescado",
-    difficulty: "Ayudante",
+    difficulty: "Medio",
+    tier: "moderate",
     dish: "sushi",
     customer: "boy",
     request: "Quiero rollitos con arroz, pescado y lechuga.",
@@ -60,10 +97,11 @@ const recipes = [
   },
   {
     name: "Sopa dorada",
-    difficulty: "Cocinera",
+    difficulty: "Medio",
+    tier: "moderate",
     dish: "soup",
     customer: "girl",
-    request: "Una sopa suave con arroz, pimiento y champiñón.",
+    request: "Una sopa suave con arroz, pimiento y champi\u00f1\u00f3n.",
     ingredients: ["arroz", "pimiento", "champinon"],
     cook: true,
     price: 70,
@@ -71,7 +109,8 @@ const recipes = [
   },
   {
     name: "Pizza vegetal",
-    difficulty: "Chef",
+    difficulty: "Dif\u00edcil",
+    tier: "hard",
     dish: "pizza",
     customer: "grandpa",
     request: "Una pizza completa: tortilla, tomate, queso y verduras.",
@@ -80,10 +119,40 @@ const recipes = [
     price: 96,
     stars: 3,
   },
+  {
+    name: "Pasta especial",
+    difficulty: "Dif\u00edcil",
+    tier: "hard",
+    dish: "pasta",
+    customer: "girl",
+    request: "Quiero pasta con salsa, queso, champi\u00f1\u00f3n y albahaca.",
+    ingredients: ["pasta", "tomate", "queso", "champinon", "albahaca"],
+    cook: true,
+    price: 88,
+    stars: 3,
+  },
+  {
+    name: "Risotto marino",
+    difficulty: "Dif\u00edcil",
+    tier: "hard",
+    dish: "soup",
+    customer: "boy",
+    request: "Un arroz cremoso con pescado, champi\u00f1\u00f3n y pimiento.",
+    ingredients: ["arroz", "pescado", "champinon", "pimiento", "albahaca"],
+    cook: true,
+    price: 104,
+    stars: 3,
+  },
 ];
 
 const byId = Object.fromEntries(ingredients.map((item) => [item.id, item]));
+const byCharacter = Object.fromEntries(characters.map((item) => [item.id, item]));
 const els = {
+  phone: document.querySelector("#phone"),
+  gameplaySections: document.querySelectorAll("[data-gameplay]"),
+  characterSelect: document.querySelector("#characterSelect"),
+  characterChoices: document.querySelector("#characterChoices"),
+  playerName: document.querySelector("#playerName"),
   coinCount: document.querySelector("#coinCount"),
   starCount: document.querySelector("#starCount"),
   levelLabel: document.querySelector("#levelLabel"),
@@ -110,6 +179,7 @@ const els = {
 };
 
 const blankState = {
+  characterId: null,
   level: 0,
   coins: 25,
   stars: 0,
@@ -123,12 +193,16 @@ const blankState = {
 
 let state = loadState();
 
+function freshState(overrides = {}) {
+  return { ...blankState, selected: [], ...overrides };
+}
+
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem("chefEstrellaState") || "null");
-    return saved ? { ...blankState, ...saved, selected: [] } : { ...blankState };
+    return saved ? freshState(saved) : freshState();
   } catch {
-    return { ...blankState };
+    return freshState();
   }
 }
 
@@ -137,12 +211,27 @@ function saveState() {
   localStorage.setItem("chefEstrellaState", JSON.stringify(safe));
 }
 
+function selectedCharacter() {
+  return byCharacter[state.characterId] || null;
+}
+
+function characterRecipes() {
+  const character = selectedCharacter();
+  if (!character) return [];
+  return recipes.filter((recipe) => character.allowedTiers.includes(recipe.tier));
+}
+
 function currentRecipe() {
-  return recipes[state.level % recipes.length];
+  const availableRecipes = characterRecipes();
+  return availableRecipes[state.level % availableRecipes.length];
 }
 
 function recipeCost(recipe) {
   return recipe.ingredients.reduce((sum, id) => sum + byId[id].cost, 0);
+}
+
+function selectedCost() {
+  return state.selected.reduce((sum, id) => sum + byId[id].cost, 0);
 }
 
 function money(amount) {
@@ -171,8 +260,21 @@ function resetPrep(message) {
   render();
 }
 
+function selectCharacter(id) {
+  const character = byCharacter[id];
+  if (!character) return;
+  state = freshState({
+    characterId: id,
+    coins: character.startingCoins,
+  });
+  saveState();
+  setFeedback(`${character.name} toma el delantal. Llega el primer cliente.`, "good");
+  render();
+}
+
 function addIngredient(id) {
   const recipe = currentRecipe();
+  if (!recipe) return;
   const maxItems = Math.max(6, recipe.ingredients.length + 1);
   if (state.selected.length >= maxItems || state.cooking) return;
   state.selected.push(id);
@@ -189,12 +291,35 @@ function removeIngredient(index) {
   state.prepared = false;
   state.cooked = false;
   els.cookMeter.classList.remove("ready");
-  setFeedback(`${byId[removed].name} salió de la bandeja.`);
+  setFeedback(`${byId[removed].name} sali\u00f3 de la bandeja.`);
+  render();
+}
+
+function failPaidCost(recipe) {
+  const loss = selectedCost();
+  state.coins = Math.max(0, state.coins - loss);
+  state.streak = 0;
+  state.level += 1;
+  saveState();
+  state.selected = [];
+  state.prepared = false;
+  state.cooked = false;
+  state.cooking = false;
+  state.mistakes = 0;
+  els.cookMeter.classList.remove("ready");
+  setFeedback(
+    `Pedido perdido. El cliente no pag\u00f3 y la cocina asumi\u00f3 ${money(loss)} en ingredientes.`,
+    "bad",
+  );
   render();
 }
 
 function prepareDish() {
   const recipe = currentRecipe();
+  if (!recipe) {
+    setFeedback("Primero elige qui\u00e9n va a cocinar.", "warn");
+    return;
+  }
   if (!state.selected.length) {
     setFeedback("Primero toca los ingredientes del pedido.", "warn");
     return;
@@ -202,6 +327,12 @@ function prepareDish() {
   if (!sameIngredients(state.selected, recipe.ingredients)) {
     state.mistakes += 1;
     state.prepared = false;
+
+    if (recipe.tier !== "easy") {
+      failPaidCost(recipe);
+      return;
+    }
+
     const missing = recipe.ingredients.filter((id) => !state.selected.includes(id)).map((id) => byId[id].name);
     const extras = state.selected.filter((id) => !recipe.ingredients.includes(id)).map((id) => byId[id].name);
     const hint = missing.length
@@ -221,6 +352,7 @@ function prepareDish() {
 
 function cookDish() {
   const recipe = currentRecipe();
+  if (!recipe) return;
   if (!recipe.cook) {
     setFeedback("Este plato se sirve fresco, sin cocinar.", "warn");
     return;
@@ -237,13 +369,14 @@ function cookDish() {
   window.setTimeout(() => {
     state.cooking = false;
     state.cooked = true;
-    setFeedback("Perfecto. El plato está caliente y listo para entregar.", "good");
+    setFeedback("Perfecto. El plato est\u00e1 caliente y listo para entregar.", "good");
     render();
   }, 900);
 }
 
 function deliverDish() {
   const recipe = currentRecipe();
+  if (!recipe) return;
   if (!state.prepared) {
     setFeedback("El cliente espera un plato preparado con los ingredientes correctos.", "warn");
     return;
@@ -274,8 +407,29 @@ function deliverDish() {
 
 function resetGame() {
   localStorage.removeItem("chefEstrellaState");
-  state = { ...blankState };
-  resetPrep("Partida nueva. Llega el primer cliente.");
+  state = freshState();
+  setFeedback("Elige un personaje para comenzar una partida nueva.");
+  render();
+}
+
+function renderCharacterChoices() {
+  els.characterChoices.innerHTML = "";
+  characters.forEach((character) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `character-card ${character.id}`;
+    button.setAttribute("aria-label", `Elegir ${character.name}`);
+    button.innerHTML = `
+      <span class="character-avatar" aria-hidden="true">${character.initial}</span>
+      <span class="character-copy">
+        <strong>${character.name}</strong>
+        <span>${character.age} · ${character.role}</span>
+        <small>${character.path}</small>
+      </span>
+    `;
+    button.addEventListener("click", () => selectCharacter(character.id));
+    els.characterChoices.appendChild(button);
+  });
 }
 
 function renderNeeded(recipe) {
@@ -310,7 +464,7 @@ function renderPlate() {
   if (!state.selected.length) {
     const empty = document.createElement("span");
     empty.className = "empty-plate";
-    empty.textContent = "Tu plato está vacío";
+    empty.textContent = "Tu plato est\u00e1 vac\u00edo";
     els.plate.appendChild(empty);
     return;
   }
@@ -325,15 +479,32 @@ function renderPlate() {
   });
 }
 
-function render() {
-  const recipe = currentRecipe();
-  const cost = recipeCost(recipe);
-  const progress = ((state.level % recipes.length) / recipes.length) * 100;
+function setGameplayVisible(isVisible) {
+  els.characterSelect.classList.toggle("hidden", isVisible);
+  els.gameplaySections.forEach((section) => section.classList.toggle("hidden", !isVisible));
+  els.phone.classList.toggle("selecting", !isVisible);
+}
 
+function render() {
+  const character = selectedCharacter();
   els.coinCount.textContent = state.coins;
   els.starCount.textContent = state.stars;
+  els.playerName.textContent = character ? character.name : "Sin personaje";
+
+  if (!character) {
+    setGameplayVisible(false);
+    renderCharacterChoices();
+    return;
+  }
+
+  const recipe = currentRecipe();
+  const availableRecipes = characterRecipes();
+  const cost = recipeCost(recipe);
+  const progress = ((state.level % availableRecipes.length) / availableRecipes.length) * 100;
+
+  setGameplayVisible(true);
   els.levelLabel.textContent = `Nivel ${state.level + 1}`;
-  els.difficultyLabel.textContent = recipe.difficulty;
+  els.difficultyLabel.textContent = `${recipe.difficulty} · ${character.name}`;
   els.levelProgress.style.width = `${Math.max(8, progress)}%`;
   els.recipeName.textContent = recipe.name;
   els.dishSprite.src = `./assets/crops/dish-${recipe.dish}.png`;
@@ -367,4 +538,5 @@ els.clearTray.addEventListener("click", () => resetPrep("Bandeja limpia. Intenta
 els.resetGame.addEventListener("click", resetGame);
 
 renderIngredients();
+renderCharacterChoices();
 render();
