@@ -19,6 +19,7 @@ const characters = [
     name: "Kevin Talks",
     age: "23 a\u00f1os",
     initial: "K",
+    avatar: "./assets/characters/kevin-avatar.png",
     role: "Chef experto",
     path: "Solo pedidos complejos",
     allowedTiers: ["hard"],
@@ -29,6 +30,7 @@ const characters = [
     name: "Agust\u00edn",
     age: "13 a\u00f1os",
     initial: "A",
+    avatar: "./assets/characters/agustin-avatar.png",
     role: "Reto intermedio",
     path: "Parte en platos moderados",
     allowedTiers: ["moderate", "hard"],
@@ -168,6 +170,8 @@ const els = {
   customerBubble: document.querySelector("#customerBubble"),
   customerSprite: document.querySelector("#customerSprite"),
   chefSprite: document.querySelector("#chefSprite"),
+  petEvent: document.querySelector("#petEvent"),
+  petDismiss: document.querySelector("#petDismiss"),
   prepStatus: document.querySelector("#prepStatus"),
   plate: document.querySelector("#plate"),
   cookMeter: document.querySelector("#cookMeter"),
@@ -191,6 +195,7 @@ const blankState = {
   cooked: false,
   cooking: false,
   mistakes: 0,
+  petEvent: false,
 };
 
 let state = loadState();
@@ -209,7 +214,7 @@ function loadState() {
 }
 
 function saveState() {
-  const { selected, prepared, cooked, cooking, mistakes, ...safe } = state;
+  const { selected, prepared, cooked, cooking, mistakes, petEvent, ...safe } = state;
   localStorage.setItem("chefEstrellaState", JSON.stringify(safe));
 }
 
@@ -278,7 +283,7 @@ function addIngredient(id) {
   const recipe = currentRecipe();
   if (!recipe) return;
   const maxItems = Math.max(6, recipe.ingredients.length + 1);
-  if (state.selected.length >= maxItems || state.cooking) return;
+  if (state.selected.length >= maxItems || state.cooking || state.petEvent) return;
   state.selected.push(id);
   state.prepared = false;
   state.cooked = false;
@@ -288,7 +293,7 @@ function addIngredient(id) {
 }
 
 function removeIngredient(index) {
-  if (state.cooking) return;
+  if (state.cooking || state.petEvent) return;
   const removed = state.selected.splice(index, 1)[0];
   state.prepared = false;
   state.cooked = false;
@@ -308,11 +313,18 @@ function failPaidCost(recipe) {
   state.cooked = false;
   state.cooking = false;
   state.mistakes = 0;
+  state.petEvent = true;
   els.cookMeter.classList.remove("ready");
   setFeedback(
-    `Pedido perdido. El cliente no pag\u00f3 y la cocina asumi\u00f3 ${money(loss)} en ingredientes.`,
+    `Pedido devuelto. El cliente no pag\u00f3, perdiste ${money(loss)} y Sasuke se comi\u00f3 todo.`,
     "bad",
   );
+  render();
+}
+
+function dismissPetEvent() {
+  state.petEvent = false;
+  setFeedback("Sasuke dej\u00f3 el plato limpio. Sigue el siguiente cliente.");
   render();
 }
 
@@ -355,6 +367,7 @@ function prepareDish() {
 function cookDish() {
   const recipe = currentRecipe();
   if (!recipe) return;
+  if (state.petEvent) return;
   if (!recipe.cook) {
     setFeedback("Este plato se sirve fresco, sin cocinar.", "warn");
     return;
@@ -379,6 +392,7 @@ function cookDish() {
 function deliverDish() {
   const recipe = currentRecipe();
   if (!recipe) return;
+  if (state.petEvent) return;
   if (!state.prepared) {
     setFeedback("El cliente espera un plato preparado con los ingredientes correctos.", "warn");
     return;
@@ -517,6 +531,7 @@ function render() {
   els.customerSprite.src = `./assets/crops/customer-${recipe.customer}.png`;
   els.chefSprite.src = character.avatar || "./assets/crops/chef.png";
   els.chefSprite.classList.toggle("custom-chef", Boolean(character.avatar));
+  els.petEvent.classList.toggle("hidden", !state.petEvent);
   els.priceValue.textContent = money(recipe.price);
   els.costValue.textContent = money(cost);
   els.profitValue.textContent = money(recipe.price - cost);
@@ -533,9 +548,9 @@ function render() {
   renderNeeded(recipe);
   renderPlate();
 
-  els.prepareButton.disabled = state.cooking;
-  els.cookButton.disabled = state.cooking || !recipe.cook || !state.prepared || state.cooked;
-  els.deliverButton.disabled = state.cooking || !state.prepared || (recipe.cook && !state.cooked);
+  els.prepareButton.disabled = state.cooking || state.petEvent;
+  els.cookButton.disabled = state.cooking || state.petEvent || !recipe.cook || !state.prepared || state.cooked;
+  els.deliverButton.disabled = state.cooking || state.petEvent || !state.prepared || (recipe.cook && !state.cooked);
 }
 
 els.prepareButton.addEventListener("click", prepareDish);
@@ -543,6 +558,7 @@ els.cookButton.addEventListener("click", cookDish);
 els.deliverButton.addEventListener("click", deliverDish);
 els.clearTray.addEventListener("click", () => resetPrep("Bandeja limpia. Intenta de nuevo."));
 els.resetGame.addEventListener("click", resetGame);
+els.petDismiss.addEventListener("click", dismissPetEvent);
 
 renderIngredients();
 renderCharacterChoices();
