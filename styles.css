@@ -484,6 +484,224 @@ button {
   box-shadow: inset 0 -2px 0 rgba(10, 95, 184, 0.12);
 }
 
+.text-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+  filter: grayscale(0.4);
+}
+
+.lesson-panel {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 9px;
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(25, 184, 197, 0.14), transparent 60%),
+    #ffffff;
+  border: 2px solid rgba(10, 95, 184, 0.12);
+}
+
+.lesson-stage {
+  min-height: 94px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #effcff, #fff);
+}
+
+.lesson-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.lesson-kicker {
+  color: var(--red-dark);
+  font-size: 0.68rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.lesson-copy strong {
+  color: var(--navy);
+  font-size: 0.96rem;
+  font-weight: 950;
+  line-height: 1.08;
+}
+
+.lesson-copy p {
+  margin: 0;
+  color: rgba(23, 43, 96, 0.72);
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.16;
+}
+
+.lesson-steps {
+  display: flex;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.lesson-dot {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9f5ff;
+  color: var(--blue);
+  border: 2px solid rgba(10, 95, 184, 0.14);
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.lesson-dot[data-active="true"] {
+  color: #fff;
+  background: var(--orange);
+  animation: pulse-dot 0.7s ease-in-out infinite alternate;
+}
+
+.lesson-dot[data-done="true"] {
+  color: #fff;
+  background: var(--green-dark);
+}
+
+.prep-scene,
+.cook-scene,
+.choice-scene,
+.ready-scene {
+  width: 100%;
+  height: 94px;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.choice-scene {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: 4px;
+  padding: 8px;
+}
+
+.choice-scene span,
+.ready-scene span {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.choice-scene.muted span {
+  opacity: 0.7;
+  filter: saturate(0.88);
+}
+
+.prep-scene img,
+.ready-scene img {
+  width: 78px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.lesson-ingredient {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.lesson-ingredient.featured {
+  animation: toss-in 0.92s ease-in-out infinite;
+}
+
+.lesson-arrow {
+  color: var(--red-dark);
+  font-size: 1.35rem;
+  font-weight: 950;
+}
+
+.lesson-spark {
+  position: absolute;
+  color: var(--yellow);
+  font-size: 1.2rem;
+  font-weight: 950;
+  animation: sparkle-pop 0.9s ease-in-out infinite alternate;
+}
+
+.lesson-spark.one {
+  left: 12px;
+  top: 14px;
+}
+
+.lesson-spark.two {
+  right: 14px;
+  bottom: 12px;
+  animation-delay: 0.25s;
+}
+
+.cook-scene .pan,
+.cook-scene .fire {
+  position: absolute;
+  line-height: 1;
+}
+
+.cook-scene .pan {
+  bottom: 18px;
+  font-size: 3rem;
+  animation: pan-shake 0.38s ease-in-out infinite alternate;
+}
+
+.cook-scene .fire {
+  bottom: 2px;
+  font-size: 1.55rem;
+  animation: fire-flicker 0.36s ease-in-out infinite alternate;
+}
+
+.steam {
+  position: absolute;
+  bottom: 52px;
+  width: 11px;
+  height: 28px;
+  border-radius: 999px;
+  border-left: 4px solid rgba(10, 95, 184, 0.36);
+  animation: steam-rise 0.85s ease-in-out infinite;
+}
+
+.steam.s1 {
+  left: 34px;
+}
+
+.steam.s2 {
+  left: 52px;
+  animation-delay: 0.18s;
+}
+
+.steam.s3 {
+  left: 70px;
+  animation-delay: 0.34s;
+}
+
+.ready-scene {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.ready-scene strong {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 1.1rem;
+}
+
 .plate-zone {
   display: grid;
   grid-template-columns: 1fr 90px;
@@ -543,6 +761,11 @@ button {
 
 .cook-meter.ready span {
   width: 100%;
+}
+
+.prep-counter:has(.lesson-panel[data-mode="prep"]) .plate {
+  border-color: rgba(116, 201, 52, 0.42);
+  background: linear-gradient(180deg, #ffffff, #f3fff1);
 }
 
 .ingredients-panel {
@@ -717,6 +940,14 @@ button {
     min-height: 68px;
   }
 
+  .lesson-panel {
+    grid-template-columns: 92px 1fr;
+  }
+
+  .lesson-stage {
+    min-height: 82px;
+  }
+
   .actions {
     grid-template-columns: 1fr;
   }
@@ -725,5 +956,82 @@ button {
 @media (min-width: 760px) {
   .phone {
     transform: none;
+  }
+}
+
+@keyframes toss-in {
+  0% {
+    transform: translate(-12px, 8px) rotate(-12deg) scale(0.9);
+  }
+  60% {
+    transform: translate(13px, -14px) rotate(10deg) scale(1.14);
+  }
+  100% {
+    transform: translate(22px, 5px) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes sparkle-pop {
+  from {
+    opacity: 0.25;
+    transform: scale(0.8) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.18) rotate(12deg);
+  }
+}
+
+@keyframes pulse-dot {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes pan-shake {
+  from {
+    transform: translateX(-2px) rotate(-3deg);
+  }
+  to {
+    transform: translateX(2px) rotate(3deg);
+  }
+}
+
+@keyframes fire-flicker {
+  from {
+    transform: scale(0.92);
+    opacity: 0.75;
+  }
+  to {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes steam-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+  }
+  45% {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-18px) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
   }
 }

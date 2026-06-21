@@ -58,6 +58,12 @@ const recipes = [
     customer: "boy",
     request: "Me encanta la pasta con tomate y albahaca.",
     ingredients: ["pasta", "tomate", "albahaca"],
+    prepSteps: [
+      "Pon la pasta como base del plato.",
+      "Agrega tomate para hacer la salsa.",
+      "Termina con albahaca para dar aroma.",
+    ],
+    cookStep: "Calienta la pasta para que la salsa se mezcle bien.",
     cook: true,
     price: 42,
     stars: 1,
@@ -70,6 +76,11 @@ const recipes = [
     customer: "girl",
     request: "Quiero una ensalada fresca con mucho color.",
     ingredients: ["lechuga", "tomate", "queso", "aceitunas"],
+    prepSteps: [
+      "Lava y acomoda la lechuga.",
+      "Agrega tomate para dar color.",
+      "Suma queso y aceitunas para terminar.",
+    ],
     cook: false,
     price: 46,
     stars: 1,
@@ -82,6 +93,12 @@ const recipes = [
     customer: "grandpa",
     request: "Un omelet calentito con queso y pimiento.",
     ingredients: ["huevo", "queso", "pimiento"],
+    prepSteps: [
+      "Rompe el huevo y b\u00e1telo suave.",
+      "Agrega queso para que quede cremoso.",
+      "Pon pimiento para dar sabor y color.",
+    ],
+    cookStep: "Cocina el omelet hasta que quede dorado.",
     cook: true,
     price: 52,
     stars: 2,
@@ -94,6 +111,11 @@ const recipes = [
     customer: "boy",
     request: "Quiero rollitos con arroz, pescado y lechuga.",
     ingredients: ["arroz", "pescado", "lechuga"],
+    prepSteps: [
+      "Extiende el arroz como base.",
+      "Agrega pescado en el centro.",
+      "Envuelve con lechuga y forma los rollitos.",
+    ],
     cook: false,
     price: 66,
     stars: 2,
@@ -106,6 +128,12 @@ const recipes = [
     customer: "girl",
     request: "Una sopa suave con arroz, pimiento y champi\u00f1\u00f3n.",
     ingredients: ["arroz", "pimiento", "champinon"],
+    prepSteps: [
+      "Pon arroz para dar cuerpo a la sopa.",
+      "Agrega pimiento picado.",
+      "Suma champi\u00f1\u00f3n para un sabor suave.",
+    ],
+    cookStep: "Hierve la sopa hasta que todo quede blandito.",
     cook: true,
     price: 70,
     stars: 2,
@@ -118,6 +146,13 @@ const recipes = [
     customer: "grandpa",
     request: "Una pizza completa: tortilla, tomate, queso y verduras.",
     ingredients: ["tortilla", "tomate", "queso", "champinon", "aceitunas", "pimiento"],
+    prepSteps: [
+      "Usa la tortilla como base de pizza.",
+      "Cubre con tomate como salsa.",
+      "Agrega queso y reparte las verduras.",
+      "Ordena los toppings para que se cocinen parejo.",
+    ],
+    cookStep: "Hornea la pizza hasta que el queso se derrita.",
     cook: true,
     price: 96,
     stars: 3,
@@ -130,6 +165,13 @@ const recipes = [
     customer: "girl",
     request: "Quiero pasta con salsa, queso, champi\u00f1\u00f3n y albahaca.",
     ingredients: ["pasta", "tomate", "queso", "champinon", "albahaca"],
+    prepSteps: [
+      "Pon pasta como base.",
+      "Agrega tomate para la salsa.",
+      "Suma queso y champi\u00f1\u00f3n.",
+      "Termina con albahaca fresca.",
+    ],
+    cookStep: "Calienta todo para unir la salsa con la pasta.",
     cook: true,
     price: 88,
     stars: 3,
@@ -142,6 +184,13 @@ const recipes = [
     customer: "boy",
     request: "Un arroz cremoso con pescado, champi\u00f1\u00f3n y pimiento.",
     ingredients: ["arroz", "pescado", "champinon", "pimiento", "albahaca"],
+    prepSteps: [
+      "Pon arroz como base cremosa.",
+      "Agrega pescado en trozos.",
+      "Suma champi\u00f1\u00f3n y pimiento.",
+      "Termina con albahaca para perfumar.",
+    ],
+    cookStep: "Cocina lento para que el arroz quede cremoso.",
     cook: true,
     price: 104,
     stars: 3,
@@ -173,6 +222,12 @@ const els = {
   petEvent: document.querySelector("#petEvent"),
   petDismiss: document.querySelector("#petDismiss"),
   prepStatus: document.querySelector("#prepStatus"),
+  lessonPanel: document.querySelector("#lessonPanel"),
+  lessonStage: document.querySelector("#lessonStage"),
+  lessonKicker: document.querySelector("#lessonKicker"),
+  lessonTitle: document.querySelector("#lessonTitle"),
+  lessonText: document.querySelector("#lessonText"),
+  lessonSteps: document.querySelector("#lessonSteps"),
   plate: document.querySelector("#plate"),
   cookMeter: document.querySelector("#cookMeter"),
   ingredientsGrid: document.querySelector("#ingredientsGrid"),
@@ -193,12 +248,16 @@ const blankState = {
   selected: [],
   prepared: false,
   cooked: false,
+  preparing: false,
   cooking: false,
+  lessonMode: "idle",
+  lessonStep: -1,
   mistakes: 0,
   petEvent: false,
 };
 
 let state = loadState();
+let lessonTimer = null;
 
 function freshState(overrides = {}) {
   return { ...blankState, selected: [], ...overrides };
@@ -214,7 +273,7 @@ function loadState() {
 }
 
 function saveState() {
-  const { selected, prepared, cooked, cooking, mistakes, petEvent, ...safe } = state;
+  const { selected, prepared, cooked, preparing, cooking, lessonMode, lessonStep, mistakes, petEvent, ...safe } = state;
   localStorage.setItem("chefEstrellaState", JSON.stringify(safe));
 }
 
@@ -257,12 +316,27 @@ function setFeedback(message, mood = "normal") {
   els.feedback.dataset.mood = mood;
 }
 
+function clearLessonTimer() {
+  if (lessonTimer) {
+    window.clearTimeout(lessonTimer);
+    lessonTimer = null;
+  }
+}
+
+function setLesson(mode, step = -1) {
+  state.lessonMode = mode;
+  state.lessonStep = step;
+}
+
 function resetPrep(message) {
+  clearLessonTimer();
   state.selected = [];
   state.prepared = false;
   state.cooked = false;
+  state.preparing = false;
   state.cooking = false;
   state.mistakes = 0;
+  setLesson("idle");
   setFeedback(message);
   render();
 }
@@ -283,20 +357,22 @@ function addIngredient(id) {
   const recipe = currentRecipe();
   if (!recipe) return;
   const maxItems = Math.max(6, recipe.ingredients.length + 1);
-  if (state.selected.length >= maxItems || state.cooking || state.petEvent) return;
+  if (state.selected.length >= maxItems || state.preparing || state.cooking || state.petEvent) return;
   state.selected.push(id);
   state.prepared = false;
   state.cooked = false;
+  setLesson("choosing", state.selected.length - 1);
   els.cookMeter.classList.remove("ready");
   setFeedback(`${byId[id].name} agregado al plato.`);
   render();
 }
 
 function removeIngredient(index) {
-  if (state.cooking || state.petEvent) return;
+  if (state.preparing || state.cooking || state.petEvent) return;
   const removed = state.selected.splice(index, 1)[0];
   state.prepared = false;
   state.cooked = false;
+  setLesson(state.selected.length ? "choosing" : "idle", state.selected.length - 1);
   els.cookMeter.classList.remove("ready");
   setFeedback(`${byId[removed].name} sali\u00f3 de la bandeja.`);
   render();
@@ -311,9 +387,11 @@ function failPaidCost(recipe) {
   state.selected = [];
   state.prepared = false;
   state.cooked = false;
+  state.preparing = false;
   state.cooking = false;
   state.mistakes = 0;
   state.petEvent = true;
+  setLesson("idle");
   els.cookMeter.classList.remove("ready");
   setFeedback(
     `Pedido devuelto. El cliente no pag\u00f3, perdiste ${money(loss)} y Sasuke se comi\u00f3 todo.`,
@@ -328,6 +406,37 @@ function dismissPetEvent() {
   render();
 }
 
+function runPrepLesson(recipe) {
+  clearLessonTimer();
+  state.preparing = true;
+  state.prepared = false;
+  state.cooked = false;
+  setLesson("prep", 0);
+  setFeedback("Preparando paso a paso...");
+  render();
+
+  const steps = recipe.prepSteps || [];
+  const advance = () => {
+    if (!state.preparing) return;
+    if (state.lessonStep < steps.length - 1) {
+      state.lessonStep += 1;
+      render();
+      lessonTimer = window.setTimeout(advance, 950);
+      return;
+    }
+
+    state.preparing = false;
+    state.prepared = true;
+    state.cooked = !recipe.cook;
+    setLesson(recipe.cook ? "readyToCook" : "readyToServe");
+    setFeedback(recipe.cook ? "Receta armada. Ahora toca cocinarla." : "Receta lista. Puedes entregarla.", "good");
+    lessonTimer = null;
+    render();
+  };
+
+  lessonTimer = window.setTimeout(advance, 950);
+}
+
 function prepareDish() {
   const recipe = currentRecipe();
   if (!recipe) {
@@ -338,6 +447,7 @@ function prepareDish() {
     setFeedback("Primero toca los ingredientes del pedido.", "warn");
     return;
   }
+  if (state.preparing || state.cooking || state.petEvent) return;
   if (!sameIngredients(state.selected, recipe.ingredients)) {
     state.mistakes += 1;
     state.prepared = false;
@@ -358,10 +468,7 @@ function prepareDish() {
     render();
     return;
   }
-  state.prepared = true;
-  state.cooked = !recipe.cook;
-  setFeedback(recipe.cook ? "Receta correcta. Ahora toca cocinarla." : "Receta lista. Puedes entregarla.", "good");
-  render();
+  runPrepLesson(recipe);
 }
 
 function cookDish() {
@@ -376,17 +483,21 @@ function cookDish() {
     setFeedback("Primero prepara la receta correcta.", "warn");
     return;
   }
-  if (state.cooking || state.cooked) return;
+  if (state.preparing || state.cooking || state.cooked) return;
+  clearLessonTimer();
   state.cooking = true;
+  setLesson("cook", 0);
   els.cookMeter.classList.add("ready");
-  setFeedback("Cocinando con cuidado...");
+  setFeedback("Cocinando con cuidado... mira el calor y las burbujas.");
   render();
-  window.setTimeout(() => {
+  lessonTimer = window.setTimeout(() => {
     state.cooking = false;
     state.cooked = true;
+    setLesson("readyToServe");
     setFeedback("Perfecto. El plato est\u00e1 caliente y listo para entregar.", "good");
+    lessonTimer = null;
     render();
-  }, 900);
+  }, 1500);
 }
 
 function deliverDish() {
@@ -415,13 +526,16 @@ function deliverDish() {
   state.selected = [];
   state.prepared = false;
   state.cooked = false;
+  state.preparing = false;
   state.cooking = false;
   state.mistakes = 0;
+  setLesson("idle");
   els.cookMeter.classList.remove("ready");
   render();
 }
 
 function resetGame() {
+  clearLessonTimer();
   localStorage.removeItem("chefEstrellaState");
   state = freshState();
   setFeedback("Elige un personaje para comenzar una partida nueva.");
@@ -498,6 +612,90 @@ function renderPlate() {
   });
 }
 
+function renderLesson(recipe) {
+  const steps = recipe.prepSteps || [];
+  const activeStep = Math.max(0, state.lessonStep);
+  const stepText = steps[activeStep] || "Elige ingredientes y mira c\u00f3mo se arma el plato.";
+  const activeIngredient = recipe.ingredients[Math.min(activeStep, recipe.ingredients.length - 1)];
+  const selectedIcons = state.selected.map((id) => `<span>${byId[id].icon}</span>`).join("");
+  const neededIcons = recipe.ingredients.map((id) => `<span>${byId[id].icon}</span>`).join("");
+
+  els.lessonPanel.dataset.mode = state.lessonMode;
+  els.lessonSteps.innerHTML = "";
+  steps.forEach((step, index) => {
+    const item = document.createElement("span");
+    item.className = "lesson-dot";
+    item.textContent = index + 1;
+    item.title = step;
+    item.dataset.active = String(state.lessonMode === "prep" && index === state.lessonStep);
+    item.dataset.done = String(
+      state.lessonMode === "prep" ? index < state.lessonStep : ["readyToCook", "cook", "readyToServe"].includes(state.lessonMode),
+    );
+    els.lessonSteps.appendChild(item);
+  });
+
+  if (state.lessonMode === "prep") {
+    els.lessonKicker.textContent = `Paso ${activeStep + 1} de ${steps.length}`;
+    els.lessonTitle.textContent = stepText;
+    els.lessonText.textContent = activeIngredient ? `Ingrediente clave: ${byId[activeIngredient].name}.` : "Ordena el plato con cuidado.";
+    els.lessonStage.innerHTML = `
+      <div class="prep-scene">
+        <span class="lesson-spark one">*</span>
+        <span class="lesson-ingredient featured">${activeIngredient ? byId[activeIngredient].icon : "\u{1F37D}\uFE0F"}</span>
+        <span class="lesson-arrow">+</span>
+        <img src="./assets/crops/dish-${recipe.dish}.png" alt="" />
+        <span class="lesson-spark two">*</span>
+      </div>
+    `;
+    return;
+  }
+
+  if (state.lessonMode === "cook") {
+    els.lessonKicker.textContent = "Cocinar";
+    els.lessonTitle.textContent = recipe.cookStep || "Cocina con cuidado.";
+    els.lessonText.textContent = "El calor transforma los ingredientes y une los sabores.";
+    els.lessonStage.innerHTML = `
+      <div class="cook-scene">
+        <span class="steam s1"></span>
+        <span class="steam s2"></span>
+        <span class="steam s3"></span>
+        <span class="pan">🍳</span>
+        <span class="fire">🔥</span>
+      </div>
+    `;
+    return;
+  }
+
+  if (state.lessonMode === "readyToCook") {
+    els.lessonKicker.textContent = "Receta armada";
+    els.lessonTitle.textContent = "Ya mezclaste lo necesario.";
+    els.lessonText.textContent = recipe.cookStep || "Ahora toca cocinar para terminar.";
+    els.lessonStage.innerHTML = `<div class="ready-scene">${neededIcons}<strong>✓</strong></div>`;
+    return;
+  }
+
+  if (state.lessonMode === "readyToServe") {
+    els.lessonKicker.textContent = "Listo";
+    els.lessonTitle.textContent = "El plato qued\u00f3 listo para entregar.";
+    els.lessonText.textContent = "Ahora el cliente puede probarlo.";
+    els.lessonStage.innerHTML = `<div class="ready-scene"><img src="./assets/crops/dish-${recipe.dish}.png" alt="" /><strong>✓</strong></div>`;
+    return;
+  }
+
+  if (state.lessonMode === "choosing" && state.selected.length) {
+    els.lessonKicker.textContent = "En la bandeja";
+    els.lessonTitle.textContent = "Vas juntando ingredientes.";
+    els.lessonText.textContent = "Cuando estén todos, presiona Preparar para ver los pasos.";
+    els.lessonStage.innerHTML = `<div class="choice-scene">${selectedIcons}</div>`;
+    return;
+  }
+
+  els.lessonKicker.textContent = "Aprende la receta";
+  els.lessonTitle.textContent = "Mira los ingredientes del pedido.";
+  els.lessonText.textContent = "Toca los ingredientes y luego presiona Preparar para ver los pasos.";
+  els.lessonStage.innerHTML = `<div class="choice-scene muted">${neededIcons}</div>`;
+}
+
 function setGameplayVisible(isVisible) {
   els.characterSelect.classList.toggle("hidden", isVisible);
   els.gameplaySections.forEach((section) => section.classList.toggle("hidden", !isVisible));
@@ -537,7 +735,9 @@ function render() {
   els.profitValue.textContent = money(recipe.price - cost);
   els.prepStatus.textContent = state.cooking
     ? "Cocinando"
-    : state.cooked
+    : state.preparing
+      ? "Preparando paso a paso"
+      : state.cooked
       ? "Listo para entregar"
       : state.prepared
         ? recipe.cook
@@ -546,11 +746,13 @@ function render() {
         : "Elige ingredientes";
 
   renderNeeded(recipe);
+  renderLesson(recipe);
   renderPlate();
 
-  els.prepareButton.disabled = state.cooking || state.petEvent;
-  els.cookButton.disabled = state.cooking || state.petEvent || !recipe.cook || !state.prepared || state.cooked;
-  els.deliverButton.disabled = state.cooking || state.petEvent || !state.prepared || (recipe.cook && !state.cooked);
+  els.prepareButton.disabled = state.preparing || state.cooking || state.petEvent;
+  els.cookButton.disabled = state.preparing || state.cooking || state.petEvent || !recipe.cook || !state.prepared || state.cooked;
+  els.deliverButton.disabled = state.preparing || state.cooking || state.petEvent || !state.prepared || (recipe.cook && !state.cooked);
+  els.clearTray.disabled = state.preparing || state.cooking || state.petEvent;
 }
 
 els.prepareButton.addEventListener("click", prepareDish);

@@ -2,6 +2,8 @@
 
 Juego web simple para celular: se elige personaje, llegan clientes, piden platos, se eligen ingredientes, se cocina cuando corresponde y se entrega el pedido para ganar monedas y estrellas.
 
+Incluye una mesa de aprendizaje que muestra pasos visuales al preparar y animaciones de calor al cocinar, para que el flujo sea mas interactivo y educativo.
+
 Personajes:
 
 - Kevin Talks: parte con platos dificiles y usa avatar caricatura.
