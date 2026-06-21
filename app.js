@@ -11,6 +11,10 @@ const ingredients = [
   { id: "pescado", name: "Pescado", cost: 9, icon: "\u{1F41F}" },
   { id: "tortilla", name: "Tortilla", cost: 4, icon: "\u{1FAD3}" },
   { id: "lechuga", name: "Lechuga", cost: 3, icon: "\u{1F96C}" },
+  { id: "harina", name: "Harina", cost: 4, icon: "\u{1F33E}" },
+  { id: "azucar", name: "Az\u00facar", cost: 3, icon: "\u{1F36C}" },
+  { id: "mantequilla", name: "Mantequilla", cost: 5, icon: "\u{1F9C8}" },
+  { id: "leche", name: "Leche", cost: 4, icon: "\u{1F95B}" },
 ];
 
 const characters = [
@@ -21,7 +25,10 @@ const characters = [
     initial: "K",
     avatar: "./assets/characters/kevin-avatar.png",
     role: "Chef experto",
-    path: "Solo pedidos complejos",
+    specialty: "omelet",
+    specialtyLabel: "Omelet",
+    specialtyBonus: 12,
+    path: "Especialidad: omelet avanzado",
     allowedTiers: ["hard"],
     startingCoins: 60,
   },
@@ -32,7 +39,10 @@ const characters = [
     initial: "A",
     avatar: "./assets/characters/agustin-avatar.png",
     role: "Reto intermedio",
-    path: "Parte en platos moderados",
+    specialty: "rollitos",
+    specialtyLabel: "Rollitos",
+    specialtyBonus: 10,
+    path: "Especialidad: rollitos",
     allowedTiers: ["moderate", "hard"],
     startingCoins: 40,
   },
@@ -43,7 +53,10 @@ const characters = [
     initial: "I",
     avatar: "./assets/characters/isabella-avatar.png",
     role: "Aprendiz estrella",
-    path: "Parte desde lo b\u00e1sico",
+    specialty: "queque",
+    specialtyLabel: "Queques",
+    specialtyBonus: 10,
+    path: "Especialidad: queques",
     allowedTiers: ["easy", "moderate", "hard"],
     startingCoins: 25,
   },
@@ -55,6 +68,7 @@ const recipes = [
     difficulty: "B\u00e1sico",
     tier: "easy",
     dish: "pasta",
+    specialty: "pasta",
     customer: "boy",
     request: "Me encanta la pasta con tomate y albahaca.",
     ingredients: ["pasta", "tomate", "albahaca"],
@@ -69,10 +83,31 @@ const recipes = [
     stars: 1,
   },
   {
+    name: "Queque de Isabella",
+    difficulty: "B\u00e1sico",
+    tier: "easy",
+    dish: "cake",
+    specialty: "queque",
+    customer: "girl",
+    request: "Quiero un queque suave, dulce y calentito.",
+    ingredients: ["harina", "huevo", "azucar", "mantequilla", "leche"],
+    prepSteps: [
+      "Mezcla harina y huevo para formar la masa.",
+      "Agrega az\u00facar para endulzar.",
+      "Suma mantequilla y leche para que quede suave.",
+      "Revuelve hasta que la mezcla se vea pareja.",
+    ],
+    cookStep: "Hornea el queque hasta que suba y quede dorado.",
+    cook: true,
+    price: 58,
+    stars: 2,
+  },
+  {
     name: "Ensalada arcoiris",
     difficulty: "B\u00e1sico",
     tier: "easy",
     dish: "salad",
+    specialty: "ensalada",
     customer: "girl",
     request: "Quiero una ensalada fresca con mucho color.",
     ingredients: ["lechuga", "tomate", "queso", "aceitunas"],
@@ -90,6 +125,7 @@ const recipes = [
     difficulty: "Medio",
     tier: "moderate",
     dish: "omelet",
+    specialty: "omelet",
     customer: "grandpa",
     request: "Un omelet calentito con queso y pimiento.",
     ingredients: ["huevo", "queso", "pimiento"],
@@ -108,6 +144,7 @@ const recipes = [
     difficulty: "Medio",
     tier: "moderate",
     dish: "sushi",
+    specialty: "rollitos",
     customer: "boy",
     request: "Quiero rollitos con arroz, pescado y lechuga.",
     ingredients: ["arroz", "pescado", "lechuga"],
@@ -125,6 +162,7 @@ const recipes = [
     difficulty: "Medio",
     tier: "moderate",
     dish: "soup",
+    specialty: "sopa",
     customer: "girl",
     request: "Una sopa suave con arroz, pimiento y champi\u00f1\u00f3n.",
     ingredients: ["arroz", "pimiento", "champinon"],
@@ -143,6 +181,7 @@ const recipes = [
     difficulty: "Dif\u00edcil",
     tier: "hard",
     dish: "pizza",
+    specialty: "pizza",
     customer: "grandpa",
     request: "Una pizza completa: tortilla, tomate, queso y verduras.",
     ingredients: ["tortilla", "tomate", "queso", "champinon", "aceitunas", "pimiento"],
@@ -158,10 +197,31 @@ const recipes = [
     stars: 3,
   },
   {
+    name: "Omelet maestro",
+    difficulty: "Dif\u00edcil",
+    tier: "hard",
+    dish: "omelet",
+    specialty: "omelet",
+    customer: "grandpa",
+    request: "Quiero un omelet dif\u00edcil con queso, verduras y aroma fresco.",
+    ingredients: ["huevo", "queso", "pimiento", "champinon", "albahaca"],
+    prepSteps: [
+      "Bate el huevo con calma.",
+      "Agrega queso para una textura cremosa.",
+      "Suma pimiento y champi\u00f1\u00f3n bien repartidos.",
+      "Termina con albahaca para levantar el aroma.",
+    ],
+    cookStep: "Cocina lento para que el omelet quede dorado y no se rompa.",
+    cook: true,
+    price: 94,
+    stars: 3,
+  },
+  {
     name: "Pasta especial",
     difficulty: "Dif\u00edcil",
     tier: "hard",
     dish: "pasta",
+    specialty: "pasta",
     customer: "girl",
     request: "Quiero pasta con salsa, queso, champi\u00f1\u00f3n y albahaca.",
     ingredients: ["pasta", "tomate", "queso", "champinon", "albahaca"],
@@ -181,6 +241,7 @@ const recipes = [
     difficulty: "Dif\u00edcil",
     tier: "hard",
     dish: "soup",
+    specialty: "risotto",
     customer: "boy",
     request: "Un arroz cremoso con pescado, champi\u00f1\u00f3n y pimiento.",
     ingredients: ["arroz", "pescado", "champinon", "pimiento", "albahaca"],
@@ -216,6 +277,7 @@ const els = {
   priceValue: document.querySelector("#priceValue"),
   costValue: document.querySelector("#costValue"),
   profitValue: document.querySelector("#profitValue"),
+  specialtyBadge: document.querySelector("#specialtyBadge"),
   customerBubble: document.querySelector("#customerBubble"),
   customerSprite: document.querySelector("#customerSprite"),
   chefSprite: document.querySelector("#chefSprite"),
@@ -284,7 +346,9 @@ function selectedCharacter() {
 function characterRecipes() {
   const character = selectedCharacter();
   if (!character) return [];
-  return recipes.filter((recipe) => character.allowedTiers.includes(recipe.tier));
+  return recipes
+    .filter((recipe) => character.allowedTiers.includes(recipe.tier))
+    .sort((a, b) => Number(b.specialty === character.specialty) - Number(a.specialty === character.specialty));
 }
 
 function currentRecipe() {
@@ -294,6 +358,14 @@ function currentRecipe() {
 
 function recipeCost(recipe) {
   return recipe.ingredients.reduce((sum, id) => sum + byId[id].cost, 0);
+}
+
+function specialtyBonus(recipe, character = selectedCharacter()) {
+  return character && recipe.specialty === character.specialty ? character.specialtyBonus : 0;
+}
+
+function recipePrice(recipe, character = selectedCharacter()) {
+  return recipe.price + specialtyBonus(recipe, character);
 }
 
 function selectedCost() {
@@ -514,15 +586,23 @@ function deliverDish() {
   }
 
   const cost = recipeCost(recipe);
-  const profit = recipe.price - cost;
+  const character = selectedCharacter();
+  const bonus = specialtyBonus(recipe, character);
+  const price = recipePrice(recipe, character);
+  const profit = price - cost;
   const tip = Math.max(0, 8 - state.mistakes * 3);
   const reward = profit + tip;
   state.coins += reward;
-  state.stars += recipe.stars;
+  state.stars += recipe.stars + (bonus ? 1 : 0);
   state.streak += 1;
   state.level += 1;
   saveState();
-  setFeedback(`Cliente feliz. Ganaste ${money(profit)} de ganancia y ${money(tip)} de propina.`, "good");
+  setFeedback(
+    bonus
+      ? `Especialidad de ${character.name}. Ganaste ${money(profit)} y una estrella extra.`
+      : `Cliente feliz. Ganaste ${money(profit)} de ganancia y ${money(tip)} de propina.`,
+    "good",
+  );
   state.selected = [];
   state.prepared = false;
   state.cooked = false;
@@ -717,6 +797,8 @@ function render() {
   const recipe = currentRecipe();
   const availableRecipes = characterRecipes();
   const cost = recipeCost(recipe);
+  const bonus = specialtyBonus(recipe, character);
+  const price = recipePrice(recipe, character);
   const progress = ((state.level % availableRecipes.length) / availableRecipes.length) * 100;
 
   setGameplayVisible(true);
@@ -730,9 +812,11 @@ function render() {
   els.chefSprite.src = character.avatar || "./assets/crops/chef.png";
   els.chefSprite.classList.toggle("custom-chef", Boolean(character.avatar));
   els.petEvent.classList.toggle("hidden", !state.petEvent);
-  els.priceValue.textContent = money(recipe.price);
+  els.priceValue.textContent = money(price);
   els.costValue.textContent = money(cost);
-  els.profitValue.textContent = money(recipe.price - cost);
+  els.profitValue.textContent = money(price - cost);
+  els.specialtyBadge.classList.toggle("hidden", !bonus);
+  els.specialtyBadge.textContent = bonus ? `Especialidad de ${character.name}: +${money(bonus)} y +1 estrella` : "";
   els.prepStatus.textContent = state.cooking
     ? "Cocinando"
     : state.preparing

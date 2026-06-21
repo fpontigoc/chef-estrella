@@ -6,9 +6,11 @@ Incluye una mesa de aprendizaje que muestra pasos visuales al preparar y animaci
 
 Personajes:
 
-- Kevin Talks: parte con platos dificiles y usa avatar caricatura.
-- Agustin: parte con platos moderados y luego dificiles, con avatar caricatura.
-- Isabella: parte desde platos basicos y usa avatar caricatura.
+- Kevin Talks: parte con platos dificiles, usa avatar caricatura y tiene especialidad en omelet.
+- Agustin: parte con platos moderados y luego dificiles, con avatar caricatura y especialidad en rollitos.
+- Isabella: parte desde platos basicos, usa avatar caricatura y tiene especialidad en queques.
+
+Cuando un personaje cocina su especialidad, gana un bono de monedas y una estrella extra.
 
 Desde nivel medio, si el pedido se prepara con ingredientes incorrectos, el cliente devuelve el plato, no paga, la cocina asume el costo de los ingredientes usados y Sasuke aparece para comerse todo.
 
